@@ -1,0 +1,41 @@
+const int ledPin1 = 2; // Pin connected to first LED
+const int ledPin2 = 3; // Pin connected to second LED
+const int ledPin3 = 4; // Pin connected to third LED
+
+const int ledCount = 3; // Total number of LEDs
+
+const long interval = 1800000; // Half an hour in milliseconds
+const int ledDuration = 20000; // LED on time in milliseconds (20 seconds)
+
+int ledPins[ledCount] = {ledPin1, ledPin2, ledPin3}; // Array to store LED pins
+int currentLED = 0; // Current LED index
+
+unsigned long previousMillis = 0; // Variable to store time
+
+void setup() {
+  // Initialize LED pins as outputs
+  for (int i = 0; i < ledCount; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  unsigned long currentMillis = millis(); // Get the current time
+  
+  // Check if half an hour has passed
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis; // Reset the timer
+    
+    // Turn off all LEDs before starting the sequence
+    for (int i = 0; i < ledCount; i++) {
+      digitalWrite(ledPins[i], LOW);
+    }
+    
+    // Turn on the current LED and move to the next one
+    digitalWrite(ledPins[currentLED], HIGH);
+    currentLED = (currentLED + 1) % ledCount;
+    
+    // Wait for the specified duration (20 seconds)
+    delay(ledDuration);
+  }
+}
